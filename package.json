@@ -1,0 +1,31 @@
+{
+  "name": "quizzy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel --presets es2015 -d lib/ src",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Florian-lg/Quizzy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Florian-lg/Quizzy/issues"
+  },
+  "homepage": "https://github.com/Florian-lg/Quizzy#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "discord.js": "^12.0.2",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/register": "^7.9.0"
+  }
+}
