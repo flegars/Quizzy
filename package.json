@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Florian-lg/Quizzy#readme",
   "dependencies": {
+    "axios": "^0.19.2",
     "bluebird": "^3.7.2",
     "discord.js": "^12.0.2",
     "sqlite3": "^4.1.1"
