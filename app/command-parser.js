@@ -1,4 +1,5 @@
 import HelpCommand from './commands/help';
+import NewGameCommand from './commands/game';
 
 export default class CommandParser {
 
@@ -7,17 +8,20 @@ export default class CommandParser {
      */
     constructor (message) {
         this.message = message;
-        this.msg = message.content.split(' ')[0];
+        this.messageContent = message.content.split(' ')[0];
     }
 
     /**
      * Used to parse message throught all commands available
      */
     analyzeMessage () {
-        switch(this.msg) {
+        switch(this.messageContent) {
             case ";help":
                 HelpCommand.parse(this.message);
                 break;
+            case ";quizz":
+                NewGameCommand.parse(this.message);
+
         }
     }
 }
