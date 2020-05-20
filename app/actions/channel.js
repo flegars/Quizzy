@@ -15,4 +15,11 @@ export default class ChannelActions {
         });
     }
 
+    /**
+     * @param {Message} message 
+     */
+   deleteMessage(message) {
+
+   } 
+
 }

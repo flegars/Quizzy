@@ -1,6 +1,5 @@
 import Command from './command'; 
 import Discord from 'discord.js';
-import ChannelActions from '../actions/channel';
 import QuizzActions from '../actions/quizz';
 
 export default class NewGameCommand extends Command {
@@ -19,7 +18,7 @@ export default class NewGameCommand extends Command {
                 };
 
                 const reactionCollector = new Discord.ReactionCollector(messageReaction, filter, {
-                    time: 500
+                    time: 15000
                 });
 
                 reactionCollector.on('collect', msgReact => {
@@ -31,7 +30,7 @@ export default class NewGameCommand extends Command {
                 });
 
                 reactionCollector.on('end', () => {
-                    quizzActions.AwaitingQuestions(message);
+                    quizzActions.WaitingQuestions(message);
                 });
             })
             .catch(() => console.error);

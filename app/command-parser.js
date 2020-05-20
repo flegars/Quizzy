@@ -12,7 +12,7 @@ export default class CommandParser {
     }
 
     /**
-     * Used to parse message throught all commands available
+     * Used to parse message through all commands available
      */
     analyzeMessage () {
         switch(this.messageContent) {

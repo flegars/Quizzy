@@ -10,48 +10,79 @@ export default class QuizzAction {
         })
     }
 
-    AwaitingQuestions(message) {
-        this.getQuestions().then(data => {
+    RandomizeQuestions(answers) {
+        const randomizedAnswers = [answers.correct_answer];
+        for (let index = 0; index < answers.incorrect_answers.length; index++) {
+            randomizedAnswers.push(answers.incorrect_answers[index]);
+        }
+        return this.Shuffle(randomizedAnswers);
+    }
+
+    Shuffle(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+        while (0 !== currentIndex) {
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+
+    WaitingQuestions(message) {
+        this.getQuestions()
+        .then(data => {
+            const total = data.length;
             data.forEach((question, index) => {
                 setTimeout(() => {
-                    this.NextQuestion(message, question, index);
-                }, 20000 * index);
-                
+                    this.NextQuestion(message, question, index, total);
+                }, 12000 * index);       
             })
         });
     }
 
-    NextQuestion(message, question, index) {
+    NextQuestion(message, question, index, total) {
         const questionEmbed = new Discord.MessageEmbed();
+        const randomizedAnswers = this.RandomizeQuestions(question);
+
         questionEmbed
-        .setAuthor(`Question #${index}`)
+        .setAuthor(`Question #${index + 1} out of ${total}`)
         .setColor('#0099ff')
-        .setTitle('0')
+        .setThumbnail('https://thumbs.gfycat.com/ElatedVigilantKakapo-size_restricted.gif')
         .setDescription(question.question)
         .addFields(
-            { name: 'Reponse 1⃣', value: question.correct_answer },
-            { name: 'Reponse 2⃣', value: question.incorrect_answers[0] },
-            { name: 'Reponse 3⃣', value: question.incorrect_answers[1] },
-            { name: 'Reponse 4⃣', value: question.incorrect_answers[2] },
-        )
+            { name: 'Reponse 1⃣', value: randomizedAnswers[0], inline: true },
+            { name: 'Reponse 2⃣', value: randomizedAnswers[1] },
+            { name: 'Reponse 3⃣', value: randomizedAnswers[2], inline: true },
+            { name: 'Reponse 4⃣', value: randomizedAnswers[3] },
+        );
         
         return message.channel.send(questionEmbed)
-        .then((message) => {         
-            this.makeCountdown(message);
-            message.react("1⃣");
-            message.react("2⃣");
-            message.react("3⃣");
-            message.react("4⃣");
-        });
+            .then( message => {         
+                message.react("1⃣");
+                message.react("2⃣");
+                message.react("3⃣");
+                message.react("4⃣");
+                message.delete({ timeout: 10000, reason: 'Remove question' });
+                setTimeout(() => {
+                    const answerIndex = this.FindCorrectAnswer(randomizedAnswers, question.correct_answer);
+                    message.channel.send(`**Question #${index + 1}** : Response was ${answerIndex} **${question.correct_answer}**`);
+                }, 10000)
+            });
     }
 
-    makeCountdown(message) {
-        const receivedEmbed = message.embeds[0];
-        const countdownEmbed = new Discord.MessageEmbed(receivedEmbed);
-        for (let i = 1; i < 21; i++) {
-            setTimeout(() => {
-                message.edit(countdownEmbed.setTitle(`${i}`));
-            }, 1000 * i)       
+    FindCorrectAnswer(randomizedAnswers, correctAnswer) {
+        const answerIndex = randomizedAnswers.findIndex(answer => answer === correctAnswer);
+        switch(answerIndex) {
+            case 0:  
+                return "1⃣";
+            case 2:  
+                return "2⃣";
+            case 3:  
+                return "3⃣";
+            case 4:  
+                return "4⃣";
         }
     }
 }

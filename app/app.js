@@ -6,7 +6,8 @@ const client = new Discord.Client();
 
 
 client.on('ready', () => {
-  console.log('Bot launched');  
+  console.log('Bot launched'); 
+  client.user.setActivity('Zeeak#2334', { type: 'PLAYING' });
 });
 
 client.on('message', message => {
