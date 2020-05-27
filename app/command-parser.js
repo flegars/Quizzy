@@ -1,5 +1,6 @@
 import HelpCommand from './commands/help';
 import NewGameCommand from './commands/game';
+import ConfigCommand from './commands/config';
 
 export default class CommandParser {
 
@@ -21,7 +22,10 @@ export default class CommandParser {
                 break;
             case ";quizz":
                 NewGameCommand.parse(this.message);
-
+                break;
+            case ";config":
+                ConfigCommand.parse(this.message);
+                break;
         }
     }
 }
